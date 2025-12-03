@@ -1,3 +1,4 @@
+import secrets
 from app.domain.ports.repositories.identities_repository import IIdentitiesRepository
 from app.drivers.schemas.identities import CreateIdentity, IdentityResponse, UpdateIdentity
 from app.domain.entities.identities import Identity
@@ -8,7 +9,6 @@ identities: list[Identity] = []
 class InMemoryIdentityRepository(IIdentitiesRepository):
 
     async def create_identity(self, identity: CreateIdentity) -> IdentityResponse:
-
         # build domain entity
         domain_identity = Identity(
             id=str(len(identities)+1),
@@ -17,6 +17,10 @@ class InMemoryIdentityRepository(IIdentitiesRepository):
             password=identity.password,
             pin=identity.pin
         )
+
+        # Generate a random activation code and ensure uniqueness in-memory
+        code = secrets.token_urlsafe(16)
+        domain_identity.activation_code = code
 
         # Add identity to the memory list
         identities.append(domain_identity)
@@ -36,6 +40,8 @@ class InMemoryIdentityRepository(IIdentitiesRepository):
 
     async def update_identity(self, identity_id: str, identity: UpdateIdentity) -> Identity:
             identity_to_update = next((x for x in identities if x.id == identity_id), None)
+            if identity_to_update is None:
+                raise ValueError(f"Identity with id '{identity_id}' not found")
 
             if identity.email:
                 identity_to_update.email = identity.email
@@ -43,10 +49,9 @@ class InMemoryIdentityRepository(IIdentitiesRepository):
                 identity_to_update.username = identity.username
 
             # not optimal, so it's temporary for local testing
-            for index, identity in enumerate(identities):
-                if identity.id == identity_id:
+            for index, identity_item in enumerate(identities):
+                if identity_item.id == identity_id:
                     identities[index] = identity_to_update
                     break
 
             return identity_to_update
-
