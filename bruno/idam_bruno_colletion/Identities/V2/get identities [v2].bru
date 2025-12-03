@@ -1,0 +1,16 @@
+meta {
+  name: get identities [v2]
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://127.0.0.1:8000/v2/identities
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
