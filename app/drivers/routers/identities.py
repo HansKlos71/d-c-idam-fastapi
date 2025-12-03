@@ -7,18 +7,17 @@ router = APIRouter()
 
 
 def get_identity_service() -> IdentityService:
-    return IdentityService()
+    return IdentityService(repository=LocalIdentityRepository())
 
 
 @router.post("/", response_model=IdentityResponse)
 async def create_identity(identity: CreateIdentity, service: IdentityService = Depends(get_identity_service)):
-    return service.create_identity(identity, repository=LocalIdentityRepository())
-    # return {"message": "A new user created!"}
+    return service.create_identity(identity)
 
 
 @router.get("/")
-async def get_identities():
-    return {"message": "All identities!"}
+async def get_identities(service: IdentityService = Depends(get_identity_service)):
+    return service.get_identities()
 
 
 @router.put("/{identity_id}")

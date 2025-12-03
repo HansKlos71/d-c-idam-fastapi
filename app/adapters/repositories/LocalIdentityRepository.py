@@ -2,6 +2,9 @@ from app.domain.ports.repositoriers.identities_repository import IIdentitiesRepo
 from app.domain.entities.identities import Identity
 from app.drivers.schemas.identities import CreateIdentity, IdentityResponse
 
+
+identities: list[Identity] = []
+
 class LocalIdentityRepository(IIdentitiesRepository):
     def __init__(self):
         pass
@@ -13,6 +16,8 @@ class LocalIdentityRepository(IIdentitiesRepository):
             email=identity.email,
             username=identity.username
         )
+        # Add identity to the memory list
+        identities.append(domain_identity)
         # map to response schema
         response = IdentityResponse(
             id=domain_identity.id,
@@ -22,7 +27,7 @@ class LocalIdentityRepository(IIdentitiesRepository):
         return response
 
     def get_identities(self) -> list[Identity]:
-        pass
+        return identities
 
 
     def update_identity(self, identity_id: str) -> Identity:
