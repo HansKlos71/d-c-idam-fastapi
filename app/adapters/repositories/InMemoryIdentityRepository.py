@@ -1,5 +1,6 @@
 import secrets
 from app.domain.ports.repositories.identities_repository import IIdentitiesRepository
+from app.drivers.schemas.auth import PasswordAuthenticationRequest
 from app.drivers.schemas.identities import CreateIdentity, IdentityResponse, UpdateIdentity
 from app.domain.entities.identities import Identity
 
@@ -55,3 +56,11 @@ class InMemoryIdentityRepository(IIdentitiesRepository):
                     break
 
             return identity_to_update
+
+    async def password_authentication(self, auth_request: PasswordAuthenticationRequest) -> Identity|None:
+        for identity in identities:
+            if identity.username == auth_request.username:
+                if identity.validate_password() == auth_request.password:
+                    return identity
+                break
+        return None
