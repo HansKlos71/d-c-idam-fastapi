@@ -61,6 +61,7 @@ class InMemoryIdentityRepository(IIdentitiesRepository):
         for identity in identities:
             if identity.username == auth_request.username:
                 if identity.validate_password() == auth_request.password:
+                    print(f"Debugger: The identity fetched from the repository {identity}")
                     return identity
                 break
         return None

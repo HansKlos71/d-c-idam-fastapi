@@ -1,14 +1,10 @@
+from fastapi import Depends
+
 from app.domain.entities.identities import Identity
 from app.drivers.schemas.auth import PasswordAuthenticationRequest, Token
 from abc import ABC, abstractmethod
-
+from app.domain.services.generate_token_service import JWTTokenGenerator
 from app.domain.ports.repositories.identities_repository import IIdentitiesRepository
-
-class Tokenizer:
-    def generate_token(self, identity: Identity) -> Token:
-        active_token = Token()
-        active_token.access_token, active_token.token_type = "access_granted", "bearer"
-        return active_token
 
 
 class IAuthenticationService(ABC):
@@ -23,12 +19,14 @@ class PasswordAuthenticationService(IAuthenticationService):
 
     def authenticate(
             self,
-            auth_request: PasswordAuthenticationRequest
+            auth_request: PasswordAuthenticationRequest,
+            tokenizer: JWTTokenGenerator = Depends(JWTTokenGenerator)
         ) -> Token|None:
-
+        auth_request = auth_request
+        tokenizer = JWTTokenGenerator()
         identity = self.repository.password_authentication(auth_request)
         if identity is not None:
-            token = Tokenizer().generate_token(identity)
+            token = tokenizer.generate_token()
             return token
         return None
 

@@ -6,7 +6,8 @@ from app.drivers.schemas.auth import PasswordAuthenticationRequest, Token
 router = APIRouter()
 
 def get_password_authentication_service() -> IAuthenticationService:
-    return PasswordAuthenticationService(InMemoryIdentityRepository)
+    repository = InMemoryIdentityRepository()
+    return PasswordAuthenticationService(repository)
 
 
 @router.post("/password/authenticate", response_model=Token)
