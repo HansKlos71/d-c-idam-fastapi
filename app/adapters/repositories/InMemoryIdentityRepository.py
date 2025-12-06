@@ -1,6 +1,6 @@
 import secrets
 from app.domain.ports.repositories.identities_repository import IIdentitiesRepository
-from app.drivers.schemas.auth import PasswordAuthenticationRequest
+from app.drivers.schemas.auth import PasswordAuthenticationRequest, PinAuthenticationRequest
 from app.drivers.schemas.identities import CreateIdentity, IdentityResponse, UpdateIdentity
 from app.domain.entities.identities import Identity
 
@@ -61,6 +61,16 @@ class InMemoryIdentityRepository(IIdentitiesRepository):
         for identity in identities:
             if identity.username == auth_request.username:
                 if identity.validate_password() == auth_request.password:
+                    print(f"Debugger: The identity fetched from the repository {identity}")
+                    return identity
+                break
+        return None
+
+
+    async def pin_authentication(self, auth_request: PinAuthenticationRequest) -> Identity|None:
+        for identity in identities:
+            if identity.username == auth_request.username:
+                if identity.pin == auth_request.pin:
                     print(f"Debugger: The identity fetched from the repository {identity}")
                     return identity
                 break

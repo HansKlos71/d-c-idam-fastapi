@@ -4,10 +4,13 @@ from app.drivers.schemas.auth import Token
 
 class JWTTokenGenerator:
 
-    def generate_token(self) -> Token:
+    def generate_token(self, identity) -> Token:
         # mocked response
         # TODO: Implement JWT token generation
+        username = identity.username
         return Token(
             access_token="access_granted",
-            token_type="bearer"
+            token_type="bearer",
+            username=username
+
         )
