@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class PasswordAuthenticationRequest(BaseModel):
     username: str
@@ -7,7 +7,7 @@ class PasswordAuthenticationRequest(BaseModel):
 
 class PinAuthenticationRequest(BaseModel):
     username: str
-    pin: str
+    pin: str = Field(min_length=4, max_length=4, pattern=r'^\d{4}$')
 
 
 class Token(BaseModel):
