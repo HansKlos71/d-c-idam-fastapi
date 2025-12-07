@@ -3,16 +3,16 @@ from typing import Optional
 
 
 class CreateIdentity(BaseModel):
-    email: EmailStr
-    username: str
-    password: str
+    email: EmailStr = Field(min_length=6, max_length=128)
+    username: str = Field(min_length=4, max_length=128)
+    password: str = Field(min_length=8, max_length=128)
     pin: Optional[str] = Field(None, min_length=4, max_length=4, pattern=r'^\d{4}$')
 
 
 class UpdateIdentity(BaseModel):
-    email: Optional[EmailStr] = None
-    username: Optional[str] = None
-    password: Optional[str] = None
+    email: Optional[EmailStr] = Field(None, min_length=6, max_length=128)
+    username: Optional[str] = Field(None, min_length=4, max_length=128)
+    password: Optional[str] = Field(None,min_length=8, max_length=128)
     pin: Optional[str] = Field(None, min_length=4, max_length=4, pattern=r'^\d{4}$')
 
 
