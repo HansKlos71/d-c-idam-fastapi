@@ -18,7 +18,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     return JSONResponse(
         status_code=status.HTTP_400_BAD_REQUEST,
         content={
-            "detail": "Incorrect request parameters.",
+            "details": "Incorrect request parameters.",
             "errors": exc.errors() # TODO: prod remove
         }
     )

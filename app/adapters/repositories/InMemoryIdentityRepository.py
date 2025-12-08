@@ -9,7 +9,7 @@ identities: list[Identity] = []
 
 class InMemoryIdentityRepository(IIdentitiesRepository):
 
-    async def create_identity(self, identity: CreateIdentity) -> IdentityResponse:
+    async def create_identity(self, identity: CreateIdentity) -> Identity:
         # build domain entity
         domain_identity = Identity(
             id=str(len(identities)+1),
@@ -27,13 +27,9 @@ class InMemoryIdentityRepository(IIdentitiesRepository):
         identities.append(domain_identity)
 
         # map to response schema
-        response = IdentityResponse(
-            id=domain_identity.id,
-            email=domain_identity.email,
-            username=domain_identity.username
-        )
 
-        return response
+
+        return domain_identity
 
     async def get_identities(self) -> list[Identity]:
         return identities

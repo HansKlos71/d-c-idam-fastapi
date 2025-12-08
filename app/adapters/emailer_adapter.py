@@ -1,7 +1,8 @@
 from app.domain.entities.identities import Identity
+from app.domain.ports.email_adapter import IEmailAdapter
 
 
-class EmailAdapter:
+class EmailAdapter(IEmailAdapter):
     async def send_email(
             self,
             identity: Identity,

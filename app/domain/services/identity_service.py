@@ -1,8 +1,6 @@
-from fastapi import HTTPException
-
 from app.domain.entities.identities import Identity
 from app.domain.ports.repositories.identities_repository import IIdentitiesRepository
-from app.domain.ports.emailer_adapter import EmailAdapter
+from app.domain.ports.email_adapter import IEmailAdapter
 from app.drivers.schemas.identities import CreateIdentity, UpdateIdentity
 
 
@@ -13,7 +11,7 @@ class IdentityService:
     async def create_identity(
             self,
             identity: CreateIdentity,
-            email_adapter: EmailAdapter # TODO inject via DI
+            email_adapter: IEmailAdapter
     ) -> Identity|None:
         new_identity = await self.repository.create_identity(identity)
         if new_identity is not None:
