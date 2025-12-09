@@ -12,3 +12,9 @@ class EmailAdapter(IEmailAdapter):
         print(f"Subject: Please activate your account")
         print(f"Click the following link to activate your account: {identity.activation_code}")
 
+class BrevoEmailAdapter(IEmailAdapter):
+    async def send_email(
+            self,
+            identity: Identity,
+    ):
+        pass

@@ -1,7 +1,7 @@
 import secrets
 from app.domain.ports.repositories.identities_repository import IIdentitiesRepository
 from app.drivers.schemas.auth import PasswordAuthenticationRequest, PinAuthenticationRequest
-from app.drivers.schemas.identities import CreateIdentity, IdentityResponse, UpdateIdentity
+from app.drivers.schemas.identities import CreateIdentity, UpdateIdentity
 from app.domain.entities.identities import Identity
 
 
@@ -25,9 +25,6 @@ class InMemoryIdentityRepository(IIdentitiesRepository):
 
         # Add identity to the memory list
         identities.append(domain_identity)
-
-        # map to response schema
-
 
         return domain_identity
 

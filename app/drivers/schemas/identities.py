@@ -12,7 +12,7 @@ class CreateIdentity(BaseModel):
 class UpdateIdentity(BaseModel):
     email: Optional[EmailStr] = Field(None, min_length=6, max_length=128)
     username: Optional[str] = Field(None, min_length=4, max_length=128)
-    password: Optional[str] = Field(None,min_length=8, max_length=128)
+    password: Optional[str] = Field(None, min_length=8, max_length=128)
     pin: Optional[str] = Field(None, min_length=4, max_length=4, pattern=r'^\d{4}$')
 
 

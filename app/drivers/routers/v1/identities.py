@@ -7,8 +7,6 @@ from app.application.mappers.identity_mapper import IdentityMapper
 
 router = APIRouter()
 
-identity_mapper_service = IdentityMapper()
-
 def get_identity_service() -> IdentityService:
     return IdentityService(repository=InMemoryIdentityRepository())
 
@@ -28,8 +26,7 @@ async def create_identity(
         email_service
     )
     if new_identity is not None:
-        identity_response = identity_mapper_service.identity_to_created_identity_response(new_identity)
-        return identity_response
+        return IdentityMapper.map_to_response(new_identity)
     raise HTTPException(
         status_code=400,
         detail="Invalid identity"
@@ -44,7 +41,7 @@ async def get_identities(service: IdentityService = Depends(get_identity_service
 @router.put("/{identity_id}", response_model=IdentityResponse)
 async def update_identity(
         identity_id: str,
-        identity: UpdateIdentity ,
+        identity: UpdateIdentity,
         service: IdentityService = Depends(get_identity_service)
     ):
     return await service.update_identity(identity_id, identity)

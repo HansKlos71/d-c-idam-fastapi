@@ -12,7 +12,7 @@ class IdentityService:
             self,
             identity: CreateIdentity,
             email_adapter: IEmailAdapter
-    ) -> Identity|None:
+    ) -> Identity | None:
         new_identity = await self.repository.create_identity(identity)
         if new_identity is not None:
             await email_adapter.send_email(new_identity)

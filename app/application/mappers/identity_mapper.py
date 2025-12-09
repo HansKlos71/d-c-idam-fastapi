@@ -3,12 +3,10 @@ from app.drivers.schemas.identities import IdentityResponse
 
 class IdentityMapper:
 
-    def identity_to_created_identity_response(self, domain_identity: Identity) -> IdentityResponse:
-        identity = domain_identity
-
-        response = IdentityResponse(
-            id=identity.id,
-            email=identity.email,
-            username=identity.username
+    @staticmethod
+    def map_to_response(domain_identity: Identity) -> IdentityResponse:
+        return IdentityResponse(
+            id=domain_identity.id,
+            email=domain_identity.email,
+            username=domain_identity.username
         )
-        return response
