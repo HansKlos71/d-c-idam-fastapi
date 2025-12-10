@@ -12,7 +12,7 @@ class InMemoryIdentityRepository(IIdentitiesRepository):
     async def create_identity(self, identity: CreateIdentity) -> Identity:
         # build domain entity
         domain_identity = Identity(
-            id=str(len(identities)+1),
+            id=str(len(identities) + 1),
             email=identity.email,
             username=identity.username,
             password=identity.password,
@@ -20,8 +20,16 @@ class InMemoryIdentityRepository(IIdentitiesRepository):
         )
 
         # Generate a random activation code and ensure uniqueness in-memory
-        code = secrets.token_urlsafe(16)
-        domain_identity.activation_code = code
+        existing_codes = {i.activation_code for i in identities if i.activation_code}
+        max_attempts = 10
+        for attempt in range(max_attempts):
+            code = secrets.token_urlsafe(16)
+            if code not in existing_codes:
+                domain_identity.activation_code = code
+                break
+        else:
+            # very unlikely, but avoid infinite loop
+            raise RuntimeError("Failed to generate a unique activation code")
 
         # Add identity to the memory list
         identities.append(domain_identity)
@@ -30,7 +38,6 @@ class InMemoryIdentityRepository(IIdentitiesRepository):
 
     async def get_identities(self) -> list[Identity]:
         return identities
-
 
     async def update_identity(self, identity_id: str, identity: UpdateIdentity) -> Identity:
             identity_to_update = next((x for x in identities if x.id == identity_id), None)

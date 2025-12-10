@@ -15,8 +15,8 @@ class Identity:
     activation_code: Optional[str] = None
     activated_at: Optional[datetime.datetime] = None
     deactivated_at: Optional[datetime.datetime] = None
-    created_at: datetime.datetime = field(default_factory=lambda: datetime.datetime.now(datetime.UTC))
-    updated_at: datetime.datetime = field(default_factory=lambda: datetime.datetime.now(datetime.UTC))
+    created_at: datetime.datetime = field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc))
+    updated_at: datetime.datetime = field(default_factory=lambda: datetime.datetime.now(datetime.timezone.utc))
 
     def validate_pin(self) -> str:
         if len(self.pin) != 4 or not self.pin.isdigit():

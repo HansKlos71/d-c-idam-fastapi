@@ -2,6 +2,7 @@ from app.domain.entities.identities import Identity
 from app.domain.ports.repositories.identities_repository import IIdentitiesRepository
 from app.domain.ports.email_adapter import IEmailAdapter
 from app.drivers.schemas.identities import CreateIdentity, UpdateIdentity
+from app.adapters.emailer_adapter import TEMPLATE_ID, EMAIL_FROM
 
 
 class IdentityService:
@@ -15,7 +16,7 @@ class IdentityService:
     ) -> Identity | None:
         new_identity = await self.repository.create_identity(identity)
         if new_identity is not None:
-            await email_adapter.send_email(new_identity)
+            await email_adapter.send_email(new_identity, EMAIL_FROM ,TEMPLATE_ID)
             return new_identity
         return None
 
