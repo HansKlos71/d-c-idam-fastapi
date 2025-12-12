@@ -56,7 +56,7 @@ class MailerSendClient(IEmailAdapter):
 
     def post(self, path: str, payload: Dict[str, Any]) -> Dict[str, Any]:
         url = self._url(path)
-        response = self.session.post(url, json=payload, timeout=self.timeout)
+        response = self.session.post(url, j son=payload, timeout=self.timeout)
         response.raise_for_status()
         # Some endpoints (or error pages) may return an empty body or non-JSON content.
         # Be defensive: attempt to decode JSON and fall back to returning status/text.
