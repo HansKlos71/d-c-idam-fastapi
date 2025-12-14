@@ -10,7 +10,6 @@ from app.config.settings import settings
 TEMPLATE_ID = settings.MAILERSEND_TEMPLATE_ID
 EMAIL_FROM = settings.MAILERSEND_EMAIL_FROM
 API_KEY = settings.MAILERSEND_API_KEY
-# Keep the legacy name used by older modules
 MAILER_SEND_API_URL = str(settings.MAILERSEND_BASE_URL)
 
 
