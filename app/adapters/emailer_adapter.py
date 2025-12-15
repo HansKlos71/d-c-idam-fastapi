@@ -57,7 +57,7 @@ class MailerSendClient(IEmailAdapter):
         url = self._url(path)
         response = self.session.post(url, json=payload, timeout=self.timeout)
         response.raise_for_status()
-        # Some endpoints (or error pages) may return an empty body or non-JSON content.
+        # Some endpoints (or error pages) may return an empty body or non-JSON content..
         # Be defensive: attempt to decode JSON and fall back to returning status/text.
         try:
             return response.json()
