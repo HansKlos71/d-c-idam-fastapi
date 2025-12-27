@@ -62,7 +62,7 @@ class MailerSendClient(IEmailAdapter):
         try:
             return response.json()
         except ValueError:
-            # response.text may be large; return concise info for debugging.
+            # response.text may be large; return concise info for debugging..
             return {"status_code": response.status_code, "text": (response.text or "")}
 
     async def send_email(self, identity: Identity, from_email: str | None = None, template_id: str | None = None) -> Dict[str, Any]:
